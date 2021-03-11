@@ -5,23 +5,33 @@
  * Email: mpardalm.developer@gmail.com
  * Alias: mpardalm
  * -----
- * Date Modified: Tuesday, March 9th 2021
+ * Date Modified: Thursday, March 11th 2021
  * Modified By: Miguel Pardal, known as mpardalm
  * -----
  * Copyright (c) 2021
  */
 
 const { Router } = require('express');
+const { check } = require('express-validator');
 const { userGet,
     userPost,
     userPut,
     userPatch,
     userDelete } = require('../controllers/user.controller');
+const { isRoleValid, isEmailDuplicated } = require('../helpers/db-validators.helpers');
+const { fieldsValidate } = require('../middlewares/fields-validation.middleware');
 
 const router = Router();
 
 router.get('/', userGet);
-router.post('/', userPost);
+router.post('/', [
+    check('name', 'Name is mandatory').not().isEmpty(),
+    check('email', 'Email not valid').isEmail(),
+    check('email').custom(isEmailDuplicated),
+    check('password', 'Password length must be greather than 6 characters').isLength({ min: 6 }),
+    check('role').custom(isRoleValid),
+    fieldsValidate
+], userPost);
 router.put('/:userID', userPut);
 router.patch('/', userPatch);
 router.delete('/', userDelete);

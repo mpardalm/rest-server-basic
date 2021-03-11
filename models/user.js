@@ -5,7 +5,7 @@
  * Email: mpardalm.developer@gmail.com
  * Alias: mpardalm
  * -----
- * Date Modified: Wednesday, March 10th 2021
+ * Date Modified: Thursday, March 11th 2021
  * Modified By: Miguel Pardal, known as mpardalm
  * -----
  * Copyright (c) 2021
@@ -32,8 +32,7 @@ const UserSchema = Schema({
     },
     role: {
         type: String,
-        required: true,
-        enum: ['ADMIN', 'USER']
+        required: true
     },
     state: {
         type: Boolean,
@@ -44,5 +43,10 @@ const UserSchema = Schema({
         default: false
     }
 });
+
+UserSchema.methods.toJSON = function () {
+    const { __v, password, ...user } = this.toObject();
+    return user;
+}
 
 module.exports = model('User', UserSchema);

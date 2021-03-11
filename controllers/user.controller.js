@@ -5,7 +5,7 @@
  * Email: mpardalm.developer@gmail.com
  * Alias: mpardalm
  * -----
- * Date Modified: Wednesday, March 10th 2021
+ * Date Modified: Thursday, March 11th 2021
  * Modified By: Miguel Pardal, known as mpardalm
  * -----
  * Copyright (c) 2021
@@ -26,7 +26,6 @@ const userGet = (req = request, res = response) => {
 const userPost = async (req = request, res = response) => {
     const { name, email, password, role } = req.body;
     const user = new User({ name, email, password, role });
-    // Check email
 
     // Encrypt pass
     const salt = bcryptjs.genSaltSync();
