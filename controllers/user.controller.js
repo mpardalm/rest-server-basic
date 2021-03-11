@@ -5,13 +5,15 @@
  * Email: mpardalm.developer@gmail.com
  * Alias: mpardalm
  * -----
- * Date Modified: Tuesday, March 9th 2021
+ * Date Modified: Wednesday, March 10th 2021
  * Modified By: Miguel Pardal, known as mpardalm
  * -----
  * Copyright (c) 2021
  */
 
 const { response, request } = require('express');
+const bcryptjs = require('bcryptjs');
+const User = require('../models/user');
 
 const userGet = (req = request, res = response) => {
     const { nombre } = req.query
@@ -21,12 +23,19 @@ const userGet = (req = request, res = response) => {
     });
 }
 
-const userPost = (req = request, res = response) => {
-    const { nombre, edad } = req.body;
+const userPost = async (req = request, res = response) => {
+    const { name, email, password, role } = req.body;
+    const user = new User({ name, email, password, role });
+    // Check email
+
+    // Encrypt pass
+    const salt = bcryptjs.genSaltSync();
+    user.password = bcryptjs.hashSync(password, salt);
+
+    // Save in DB
+    await user.save();
     res.json({
-        msg: 'post API - User',
-        nombre,
-        edad
+        user
     });
 }
 const userPut = (req = request, res = response) => {
