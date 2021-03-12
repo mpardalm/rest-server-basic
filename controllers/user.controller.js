@@ -68,10 +68,15 @@ const userPatch = (req = request, res = response) => {
     });
 }
 
-const userDelete = (req = request, res = response) => {
-    res.json({
-        msg: 'delete API - User'
-    });
+const userDelete = async (req = request, res = response) => {
+    const { userID } = req.params
+
+    // Permant Delete
+    // const user = await User.findByIdAndDelete(userID);
+
+    const user = await User.findByIdAndUpdate(userID, { state: false });
+
+    res.json({ user });
 }
 
 module.exports = {
