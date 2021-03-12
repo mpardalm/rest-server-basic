@@ -15,11 +15,20 @@ const { response, request } = require('express');
 const bcryptjs = require('bcryptjs');
 const User = require('../models/user');
 
-const userGet = (req = request, res = response) => {
-    const { nombre } = req.query
+const userGet = async (req = request, res = response) => {
+    const { limit = 5, pagination = 0 } = req.query;
+    const queryState = { state: true };
+
+    const [users, usersCount] = await Promise.all([
+        User.find(queryState)
+            .skip(Number(pagination))
+            .limit(Number(limit)),
+        User.countDocuments(queryState)
+    ]);
+
     res.json({
-        msg: 'get API - User',
-        nombre
+        usersCount,
+        users
     });
 }
 
@@ -42,7 +51,6 @@ const userPut = async (req = request, res = response) => {
     const { userID } = req.params
     const { _id, password, google, email, ...rest } = req.body;
 
-    //TODO: Validate
     if (password) {
         // Encrypt pass
         const salt = bcryptjs.genSaltSync();
@@ -51,10 +59,7 @@ const userPut = async (req = request, res = response) => {
 
     const user = await User.findByIdAndUpdate(userID, rest);
 
-    res.json({
-        msg: 'put API - User',
-        user
-    });
+    res.json(user);
 }
 
 const userPatch = (req = request, res = response) => {
