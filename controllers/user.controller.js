@@ -5,7 +5,7 @@
  * Email: mpardalm.developer@gmail.com
  * Alias: mpardalm
  * -----
- * Date Modified: Thursday, March 11th 2021
+ * Date Modified: Friday, March 12th 2021
  * Modified By: Miguel Pardal, known as mpardalm
  * -----
  * Copyright (c) 2021
@@ -37,13 +37,26 @@ const userPost = async (req = request, res = response) => {
         user
     });
 }
-const userPut = (req = request, res = response) => {
-    const userID = req.params.userID
+
+const userPut = async (req = request, res = response) => {
+    const { userID } = req.params
+    const { _id, password, google, email, ...rest } = req.body;
+
+    //TODO: Validate
+    if (password) {
+        // Encrypt pass
+        const salt = bcryptjs.genSaltSync();
+        rest.password = bcryptjs.hashSync(password, salt);
+    }
+
+    const user = await User.findByIdAndUpdate(userID, rest);
+
     res.json({
         msg: 'put API - User',
-        userID
+        user
     });
 }
+
 const userPatch = (req = request, res = response) => {
     res.json({
         msg: 'patch API - User'

@@ -5,7 +5,7 @@
  * Email: mpardalm.developer@gmail.com
  * Alias: mpardalm
  * -----
- * Date Modified: Thursday, March 11th 2021
+ * Date Modified: Friday, March 12th 2021
  * Modified By: Miguel Pardal, known as mpardalm
  * -----
  * Copyright (c) 2021
@@ -18,7 +18,7 @@ const { userGet,
     userPut,
     userPatch,
     userDelete } = require('../controllers/user.controller');
-const { isRoleValid, isEmailDuplicated } = require('../helpers/db-validators.helpers');
+const { isRoleValid, isEmailDuplicated, existUserByID } = require('../helpers/db-validators.helpers');
 const { fieldsValidate } = require('../middlewares/fields-validation.middleware');
 
 const router = Router();
@@ -32,7 +32,12 @@ router.post('/', [
     check('role').custom(isRoleValid),
     fieldsValidate
 ], userPost);
-router.put('/:userID', userPut);
+router.put('/:userID', [
+    check('userID', 'Not a valid ID').isMongoId(),
+    check('userID').custom(existUserByID),
+    check('role').custom(isRoleValid),
+    fieldsValidate
+], userPut);
 router.patch('/', userPatch);
 router.delete('/', userDelete);
 
