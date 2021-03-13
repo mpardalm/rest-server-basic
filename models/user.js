@@ -5,7 +5,7 @@
  * Email: mpardalm.developer@gmail.com
  * Alias: mpardalm
  * -----
- * Date Modified: Thursday, March 11th 2021
+ * Date Modified: Saturday, March 13th 2021
  * Modified By: Miguel Pardal, known as mpardalm
  * -----
  * Copyright (c) 2021
@@ -45,7 +45,8 @@ const UserSchema = Schema({
 });
 
 UserSchema.methods.toJSON = function () {
-    const { __v, password, ...user } = this.toObject();
+    const { __v, password, _id, ...user } = this.toObject();
+    user.uid = _id;
     return user;
 }
 
