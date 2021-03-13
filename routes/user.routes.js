@@ -19,9 +19,7 @@ const { userGet,
     userPatch,
     userDelete } = require('../controllers/user.controller');
 const { isRoleValid, isEmailDuplicated, existUserByID } = require('../helpers/db-validators.helpers');
-const { fieldsValidate } = require('../middlewares/fields-validation.middleware');
-const { jwtValidator } = require('../middlewares/jwt-validator.middleware');
-const { isAdminRole, hasRole } = require('../middlewares/role-validator.middleware');
+const { fieldsValidate, jwtValidator, isAdminRole, hasRole } = require('../middlewares');
 
 const router = Router();
 
