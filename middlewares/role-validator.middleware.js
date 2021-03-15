@@ -5,7 +5,7 @@
  * Email: mpardalm.developer@gmail.com
  * Alias: mpardalm
  * -----
- * Date Modified: Saturday, March 13th 2021
+ * Date Modified: Monday, March 15th 2021
  * Modified By: Miguel Pardal, known as mpardalm
  * -----
  * Copyright (c) 2021
@@ -13,7 +13,7 @@
 
 const { response, request } = require("express")
 
-const isAdminRole = (req = request, res = response) => {
+const isAdminRole = (req = request, res = response, next) => {
     if (!req.userAutenticated) {
         return res.status(500).json({
             msg: 'Unavailable to verify user'

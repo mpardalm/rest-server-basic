@@ -5,13 +5,12 @@
  * Email: mpardalm.developer@gmail.com
  * Alias: mpardalm
  * -----
- * Date Modified: Friday, March 12th 2021
+ * Date Modified: Monday, March 15th 2021
  * Modified By: Miguel Pardal, known as mpardalm
  * -----
  * Copyright (c) 2021
  */
-const Role = require('../models/role');
-const User = require('../models/user');
+const { Category, Role, User } = require('../models');
 
 const isRoleValid = async (role = '') => {
     const existsRole = await Role.findOne({ role });
@@ -34,8 +33,16 @@ const existUserByID = async (userID) => {
     }
 };
 
+const existCategoryByID = async (categoryID) => {
+    const existCategoryID = await Category.findOne({ _id: categoryID, state: true });
+    if (!existCategoryID) {
+        throw new Error(`ID not present in DB`);
+    }
+};
+
 module.exports = {
     isRoleValid,
     isEmailDuplicated,
-    existUserByID
+    existUserByID,
+    existCategoryByID
 }
