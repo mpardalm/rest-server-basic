@@ -5,7 +5,7 @@
  * Email: mpardalm.developer@gmail.com
  * Alias: mpardalm
  * -----
- * Date Modified: Saturday, March 13th 2021
+ * Date Modified: Sunday, March 14th 2021
  * Modified By: Miguel Pardal, known as mpardalm
  * -----
  * Copyright (c) 2021
@@ -24,7 +24,7 @@ const jwtValidator = async (req = request, res = response, next) => {
     }
     try {
         const { uid } = jwt.verify(token, process.env.PRIVATEJWTKEY);
-        const userAutenticated = User.findById(uid);
+        const userAutenticated = await User.findById(uid);
 
         //Check if userAutenticated
         if (!userAutenticated) {

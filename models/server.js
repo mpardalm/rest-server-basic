@@ -5,7 +5,7 @@
  * Email: mpardalm.developer@gmail.com
  * Alias: mpardalm
  * -----
- * Date Modified: Saturday, March 13th 2021
+ * Date Modified: Sunday, March 14th 2021
  * Modified By: Miguel Pardal, known as mpardalm
  * -----
  * Copyright (c) 2021
@@ -21,8 +21,11 @@ class Server {
         this.app = express();
         this.port = process.env.PORT;
 
-        this.usersPath = '/api/user';
-        this.authPath = '/api/auth';
+        this.paths = {
+            auth: '/api/auth',
+            users: '/api/user',
+            categories: '/api/categories'
+        }
 
         // DB Connection
         this.dbConnect();
@@ -32,8 +35,9 @@ class Server {
     }
 
     routes() {
-        this.app.use(this.authPath, require('../routes/auth.routes'));
-        this.app.use(this.usersPath, require('../routes/user.routes'));
+        this.app.use(this.paths.auth, require('../routes/auth.routes'));
+        this.app.use(this.paths.users, require('../routes/user.routes'));
+        this.app.use(this.paths.categories, require('../routes/categories.routes'));
     }
 
     async dbConnect() {
